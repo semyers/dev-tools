@@ -47,7 +47,6 @@ class AdServices:
     self.custom_audience = custom_audience.CustomAudience(adb_client)
     self.ad_selection = ad_selection.AdSelection(adb_client)
     self.app_signals = app_signals.AppSignals(adb_client)
-    self.dev_session = dev_session.DevSession(adb_client)
 
   def status(self):
     """Print details about running adservices.
@@ -106,7 +105,7 @@ class AdServices:
   def enable(
       self,
       feature_name: str = flag_constants.FEATURE_ALL,
-      disable_flag_push: bool = True,
+      disable_flag_push: bool = False,
   ):
     """Enable the adservices process and flags for either all features or a specific feature provided.
 
@@ -269,7 +268,7 @@ class AdServices:
       )
 
     self.adb.set_sync_disabled_for_tests(
-        "until_reboot" if disable_flag_push else "none",
+        "persistent" if enabled and disable_flag_push else "none",
     )
 
     if enabled:
